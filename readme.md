@@ -20,6 +20,7 @@ You can download YardWatch plugin on [Modrinth](https://modrinth.com/plugin/yard
 - [FactionsUUID](https://www.spigotmc.org/resources/factionsuuid.1035/)
 - [SuperiorSkyBlock](https://bg-software.com/superiorskyblock/)
 - [Towny](https://github.com/TownyAdvanced/Towny)
+- [PlotSquared (6.0.0+)](https://www.spigotmc.org/resources/plotsquared.1177/)
 
 ## Plugin you're using is not implementing YardWatchAPI?
 Contact the plugin developer and send them [here](https://github.com/YouHaveTrouble/YardWatchAPI/blob/master/readme.md)!
