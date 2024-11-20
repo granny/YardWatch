@@ -1,6 +1,9 @@
 package me.youhavetrouble.yardwatch;
 
 import com.google.common.io.Resources;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import me.youhavetrouble.yardwatch.commands.YardWatchCommand;
 import me.youhavetrouble.yardwatch.hooks.FactionsUUIDProtection;
 import me.youhavetrouble.yardwatch.hooks.GriefPreventionProtection;
@@ -22,19 +25,24 @@ import java.util.List;
 @SuppressWarnings("UnstableApiUsage")
 public final class YardWatch extends JavaPlugin {
 
-    private static String yardWatchApiVersion = "Unknown";
+    private static String yardWatchApiVersion;
+    private static Attributes manifestAttributes;
+
 
     @Override
     public void onEnable() {
 
         try {
-            final URL url = getClassLoader().getResource("apiversion.txt");
+            final URL url = Resources.getResource("META-INF/MANIFEST.MF");
 
-            if (url != null) {
-                yardWatchApiVersion = Resources.toString(url, com.google.common.base.Charsets.UTF_8);
+            Manifest manifest;
+            try (final InputStream inputStream = url.openStream()) {
+                manifest = new Manifest(inputStream);
             }
-        } catch (IOException e) {
-            getLogger().warning("Failed to read YardWatch API version.");
+            manifestAttributes = manifest.getMainAttributes();
+
+        } catch (IOException | IllegalArgumentException e) {
+            getLogger().warning("Failed to obtain Manifest from META-INF");
         }
 
         PluginCommand command = getCommand("yardwatch");
@@ -122,6 +130,12 @@ public final class YardWatch extends JavaPlugin {
     }
 
     public static String getYardWatchApiVersion() {
+        if (yardWatchApiVersion == null) {
+            yardWatchApiVersion = manifestAttributes.getValue("yardwatch-api-version");
+            if (yardWatchApiVersion == null) {
+                yardWatchApiVersion = "Unknown";
+            }
+        }
         return yardWatchApiVersion;
     }
 }
